@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Complaint Management System</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+header {
+    background: #172554;
+    color: white;
+    padding: 25px 8%;
+}
+
+header h1 {
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #cbd5e1;
+}
+
+nav {
+    background: white;
+    padding: 15px 8%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 2px 5px #0001;
+}
+
+nav button {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #e2e8f0;
+    color: #1e293b;
+    font-weight: bold;
+}
+
+nav button.active,
+nav button:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.container {
+    max-width: 1150px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 15px #0000000a;
+}
+
+.card h2 {
+    margin-bottom: 20px;
+    color: #172554;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat {
+    background: white;
+    padding: 22px;
+    border-radius: 10px;
+    border-left: 5px solid #2563eb;
+}
+
+.stat h3 {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.stat p {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+form .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.field {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid #93c5fd;
+    border-color: #2563eb;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.primary {
+    background: #2563eb;
+    color: white;
+}
+
+.secondary {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.success {
+    background: #15803d;
+    color: white;
+}
+
+.danger {
+    background: #dc2626;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.85;
+}
+
+.notice {
+    display: none;
+    padding: 14px;
+    background: #dcfce7;
+    color: #166534;
+    border-radius: 6px;
+    margin-bottom: 18px;
+    overflow-wrap: anywhere;
+}
+
+.searchbar {
+    margin-bottom: 18px;
+    max-width: 450px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 750px;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+}
+
+th {
+    background: #f8fafc;
+    color: #475569;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.Pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.In-Progress {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.Resolved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.Rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.details {
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+.details h3 {
+    margin-bottom: 10px;
+}
+
+.muted {
+    color: #64748b;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #64748b;
+}
+
+@media (max-width: 650px) {
+    header {
+        padding: 22px;
+    }
+
+    nav {
+        padding: 12px 20px;
+    }
+
+    nav button {
+        flex: 1;
+    }
+
+    form .grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .card {
+        padding: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>College Complaint Management System</h1>
+    <p>A transparent platform to submit, track and resolve student complaints.</p>
+</header>
+
+<nav>
+    <button class="active" data-page="submit">Submit Complaint</button>
+    <button data-page="list">Complaint List</button>
+    <button data-page="track">Track Complaint</button>
+    <button data-page="manage">Manage &amp; Resolve</button>
+</nav>
+
+<main class="container">
+
+    <!-- DASHBOARD -->
+    <section class="stats">
+        <div class="stat">
+            <h3>Total Complaints</h3>
+            <p id="totalCount">0</p>
+        </div>
+        <div class="stat">
+            <h3>Pending</h3>
+            <p id="pendingCount">0</p>
+        </div>
+        <div class="stat">
+            <h3>In Progress</h3>
+            <p id="progressCount">0</p>
+        </div>
+        <div class="stat">
+            <h3>Resolved</h3>
+            <p id="resolvedCount">0</p>
+        </div>
+    </section>
+
+    <!-- PAGE 1: SUBMIT -->
+    <section id="submit" class="page active">
+        <div class="card">
+            <h2>Submit a New Complaint</h2>
+            <div id="submitNotice" class="notice" role="status"></div>
+
+            <form id="complaintForm">
+                <div class="grid">
+                    <div class="field">
+                        <label for="studentName">Student Name *</label>
+                        <input id="studentName" required maxlength="100"
+                               placeholder="Enter your full name">
+                    </div>
+
+                    <div class="field">
+                        <label for="rollNumber">Roll Number *</label>
+                        <input id="rollNumber" required maxlength="30"
+                               placeholder="Enter your roll number">
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Email Address *</label>
+                        <input id="email" type="email" required maxlength="150"
+                               placeholder="student@example.com">
+                    </div>
+
+                    <div class="field">
+                        <label for="department">Department *</label>
+                        <select id="department" required>
+                            <option value="">Select department</option>
+                            <option>Information Technology</option>
+                            <option>Computer Science</option>
+                            <option>Electronics</option>
+                            <option>Mechanical Engineering</option>
+                            <option>Civil Engineering</option>
+                            <option>Business Administration</option>
+                            <option>Commerce</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="category">Complaint Category *</label>
+                        <select id="category" required>
+                            <option value="">Select category</option>
+                            <option>Academic</option>
+                            <option>Examination</option>
+                            <option>Faculty</option>
+                            <option>Infrastructure</option>
+                            <option>Library</option>
+                            <option>Hostel</option>
+                            <option>Fees and Accounts</option>
+                            <option>Harassment or Safety</option>
+                            <option>Technical Issue</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="priority">Priority *</label>
+                        <select id="priority" required>
+                            <option value="Normal">Normal</option>
+                            <option value="High">High</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="subject">Complaint Subject *</label>
+                    <input id="subject" required maxlength="150"
+                           placeholder="Briefly describe the issue">
+                </div>
+
+                <div class="field">
+                    <label for="description">Complaint Description *</label>
+                    <textarea id="description" required maxlength="3000"
+                              placeholder="Explain your complaint in detail..."></textarea>
+                </div>
+
+<div class="field">
+    <label for="description">Complaint Description *</label>
+
+    <textarea
+        id="description"
+        required
+        maxlength="3000"
+        placeholder="Explain your complaint in detail..."
+    ></textarea>
+
+    <!-- Photo upload inside description box -->
+    <div style="
+        border: 2px dashed #94a3b8;
+        border-radius: 8px;
+        padding: 18px;
+        margin-top: 10px;
+        background: #f8fafc;
+        text-align: center;
+    ">
+        <label for="evidence" style="cursor:pointer;">
+            📷 Attach Photos of Your Issue
+        </label>
+
+        <p style="color:#64748b; font-size:13px; margin:8px 0;">
+            Click below to upload a photo (JPG, PNG or WEBP, max 2 MB each)
+        </p>
+
+        <input
+            type="file"
+            id="evidence"
+            accept="image/jpeg,image/png,image/webp"
+            multiple
+        >
+
+        <div id="imagePreviewBox"
+             style="display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;">
+        </div>
+    </div>
+</div>
+
+                <div class="actions">
+                    <button class="btn primary" type="submit">
+                        Submit Complaint
+                    </button>
+                    <button class="btn secondary" type="button"
+                            id="cancelForm">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- PAGE 2: COMPLAINT LIST -->
+    <section id="list" class="page">
+        <div class="card">
+            <h2>Submitted Complaints</h2>
+
+            <input class="searchbar" id="listSearch"
+                   placeholder="Search by complaint ID, name or subject...">
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Complaint ID</th>
+                            <th>Student</th>
+                            <th>Category</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complaintTable"></tbody>
+                </table>
+            </div>
+            <p id="listEmpty" class="muted"></p>
+        </div>
+    </section>
+
+    <!-- PAGE 3: TRACK -->
+    <section id="track" class="page">
+        <div class="card">
+            <h2>Track Your Complaint</h2>
+            <p class="muted" style="margin-bottom:18px">
+                Enter your complaint ID to view its current status and resolution.
+            </p>
+
+            <form id="trackForm">
+                <div class="field">
+                    <label for="trackId">Complaint ID</label>
+                    <input id="trackId" required
+                           placeholder="Example: CMP-123456789-123">
+                </div>
+                <button class="btn primary" type="submit">Track Complaint</button>
+            </form>
+
+            <div id="trackResult" style="margin-top:25px"></div>
+        </div>
+    </section>
+
+    <!-- PAGE 4: ADMIN MANAGEMENT -->
+    <section id="manage" class="page">
+        <div class="card">
+            <h2>Manage Complaints &amp; Update Resolution</h2>
+            <p class="muted" style="margin-bottom:18px">
+                Demonstration interface. A real deployment should restrict this
+                section to authenticated college staff.
+            </p>
+
+            <div class="field">
+                <label for="manageSelect">Select Complaint</label>
+                <select id="manageSelect">
+                    <option value="">Select a complaint</option>
+                </select>
+            </div>
+
+            <div id="manageDetails" style="display:none">
+                <div id="manageSummary" class="details"
+                     style="margin-bottom:20px"></div>
+
+                <form id="updateForm">
+                    <div class="field">
+                        <label for="newStatus">Update Status *</label>
+                        <select id="newStatus" required>
+                            <option>Pending</option>
+                            <option>In Progress</option>
+                            <option>Resolved</option>
+                            <option>Rejected</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="resolution">Resolution / Staff Remarks</label>
+                        <textarea id="resolution" maxlength="2000"
+                                  placeholder="Enter action taken or resolution details..."></textarea>
+                    </div>
+
+                    <button class="btn success" type="submit">
+                        Save Status &amp; Resolution
+                    </button>
+                </form>
+            </div>
+
+            <p id="manageEmpty" class="muted"></p>
+            <div id="manageNotice" class="notice" style="margin-top:18px"></div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    College Complaint Management System | Student Support Portal
+</footer>
+
+<script>
+"use strict";
+
+const STORAGE_KEY = "collegeComplaintManagement_v1";
+
+let complaints = loadComplaints();
+let selectedManageId = "";
+
+function loadComplaints() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(saved) ? saved : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function saveComplaints() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(complaints));
+        return true;
+    } catch (error) {
+        alert("Unable to save data. Browser storage may be unavailable or full.");
+        return false;
+    }
+}
+
+function makeId() {
+    let id;
+    do {
+        id = "CMP-" + Date.now() + "-" +
+             Math.floor(100 + Math.random() * 900);
+    } while (complaints.some(c => c.id === id));
+    return id;
+}
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function formatDate(value) {
+    return new Date(value).toLocaleString();
+}
+
+function statusClass(status) {
+    return status.replace(/\s+/g, "-");
+}
+
+function statusBadge(status) {
+    return '<span class="status ' + statusClass(status) + '">' +
+        escapeHTML(status) + '</span>';
+}
+
+function showPage(pageId) {
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.toggle("active", page.id === pageId);
+    });
+
+    document.querySelectorAll("nav button").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === pageId);
+    });
+
+    if (pageId === "list") renderList();
+    if (pageId === "manage") renderManageOptions();
+    updateDashboard();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll("nav button").forEach(button => {
+    button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+function updateDashboard() {
+    document.getElementById("totalCount").textContent = complaints.length;
+    document.getElementById("pendingCount").textContent =
+        complaints.filter(c => c.status === "Pending").length;
+    document.getElementById("progressCount").textContent =
+        complaints.filter(c => c.status === "In Progress").length;
+    document.getElementById("resolvedCount").textContent =
+        complaints.filter(c => c.status === "Resolved").length;
+}
+
+function showNotice(id, message) {
+    const element = document.getElementById(id);
+    element.textContent = message;
+    element.style.display = "block";
+}
+
+function hideNotice(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+// SUBMIT COMPLAINT
+document.getElementById("complaintForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const complaint = {
+        id: makeId(),
+        name: document.getElementById("studentName").value.trim(),
+        roll: document.getElementById("rollNumber").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        department: document.getElementById("department").value,
+        category: document.getElementById("category").value,
+        priority: document.getElementById("priority").value,
+        subject: document.getElementById("subject").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        status: "Pending",
+        resolution: "",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+    };
+
+    complaints.unshift(complaint);
+
+    if (!saveComplaints()) {
+        complaints.shift();
+        return;
+    }
+
+    const form = document.getElementById("complaintForm");
+    form.reset();
+
+    showNotice("submitNotice",
+        "Complaint submitted successfully! Your Complaint ID is " +
+        complaint.id + ". Save this ID to track your complaint.");
+
+    updateDashboard();
+    renderList();
+    renderManageOptions();
+    document.getElementById("trackId").value = complaint.id;
+});
+
+document.getElementById("cancelForm").addEventListener("click", () => {
+    document.getElementById("complaintForm").reset();
+    hideNotice("submitNotice");
+});
+
+// COMPLAINT LIST
+function renderList() {
+    const query = document.getElementById("listSearch").value
+        .trim().toLowerCase();
+
+    const filtered = complaints.filter(c =>
+        [c.id, c.name, c.roll, c.subject, c.category, c.status]
+            .some(value => String(value).toLowerCase().includes(query))
+    );
+
+    document.getElementById("complaintTable").innerHTML =
+        filtered.map(c => `
+            <tr>
+                <td>${escapeHTML(c.id)}</td>
+                <td>${escapeHTML(c.name)}</td>
+                <td>${escapeHTML(c.category)}</td>
+                <td>${escapeHTML(c.subject)}</td>
+                <td>${escapeHTML(new Date(c.createdAt).toLocaleDateString())}</td>
+                <td>${statusBadge(c.status)}</td>
+                <td>
+                    <button class="btn primary view-btn"
+                            data-id="${escapeHTML(c.id)}">View</button>
+                </td>
+            </tr>
+        `).join("");
+
+    document.getElementById("listEmpty").textContent =
+        filtered.length ? "" : "No complaints found.";
+}
+
+document.getElementById("listSearch").addEventListener("input", renderList);
+
+document.getElementById("complaintTable").addEventListener("click", event => {
+    const button = event.target.closest(".view-btn");
+    if (!button) return;
+
+    document.getElementById("trackId").value = button.dataset.id;
+    showPage("track");
+    displayTrackedComplaint(button.dataset.id);
+});
+
+// TRACK COMPLAINT
+document.getElementById("trackForm").addEventListener("submit", event => {
+    event.preventDefault();
+    displayTrackedComplaint(document.getElementById("trackId").value.trim());
+});
+
+function displayTrackedComplaint(id) {
+    const c = complaints.find(item =>
+        item.id.toLowerCase() === id.toLowerCase()
+    );
+
+    const result = document.getElementById("trackResult");
+
+    if (!c) {
+        result.innerHTML =
+            '<p style="color:#b91c1c">Complaint not found. Please check your ID.</p>';
+        return;
+    }
+
+    result.innerHTML = `
+        <div class="card" style="border:1px solid #e2e8f0">
+            <h3>Complaint Details</h3>
+            <div class="details">
+                <p><strong>Complaint ID:</strong> ${escapeHTML(c.id)}</p>
+                <p><strong>Student:</strong> ${escapeHTML(c.name)}</p>
+                <p><strong>Department:</strong> ${escapeHTML(c.department)}</p>
+                <p><strong>Category:</strong> ${escapeHTML(c.category)}</p>
+                <p><strong>Subject:</strong> ${escapeHTML(c.subject)}</p>
+                <p><strong>Description:</strong> ${escapeHTML(c.description)}</p>
+                <p><strong>Priority:</strong> ${escapeHTML(c.priority)}</p>
+                <p><strong>Submitted:</strong> ${escapeHTML(formatDate(c.createdAt))}</p>
+                <p><strong>Last Updated:</strong> ${escapeHTML(formatDate(c.updatedAt))}</p>
+                <p><strong>Current Status:</strong> ${statusBadge(c.status)}</p>
+                <p><strong>Resolution / Staff Remarks:</strong><br>
+                    ${escapeHTML(c.resolution || "No resolution update has been provided yet.")}
+                </p>
+            </div>
+        </div>
+    `;
+}
+
+// MANAGE AND RESOLVE COMPLAINTS
+function renderManageOptions() {
+    const select = document.getElementById("manageSelect");
+    const previous = selectedManageId || select.value;
+
+    select.innerHTML = '<option value="">Select a complaint</option>' +
+        complaints.map(c =>
+            `<option value="${escapeHTML(c.id)}">${escapeHTML(c.id)} — ` +
+            `${escapeHTML(c.subject)}</option>`
+        ).join("");
+
+    if (complaints.some(c => c.id === previous)) {
+        select.value = previous;
+    }
+
+    document.getElementById("manageEmpty").textContent =
+        complaints.length ? "" : "No complaints have been submitted yet.";
+
+    renderManageDetails();
+}
+
+document.getElementById("manageSelect").addEventListener("change", event => {
+    selectedManageId = event.target.value;
+    renderManageDetails();
+});
+
+function renderManageDetails() {
+    const c = complaints.find(item => item.id ===
+        document.getElementById("manageSelect").value);
+
+    const details = document.getElementById("manageDetails");
+
+    if (!c) {
+        details.style.display = "none";
+        return;
+    }
+
+    selectedManageId = c.id;
+    details.style.display = "block";
+
+    document.getElementById("manageSummary").innerHTML = `
+        <h3>${escapeHTML(c.subject)}</h3>
+        <p><strong>ID:</strong> ${escapeHTML(c.id)}</p>
+        <p><strong>Student:</strong> ${escapeHTML(c.name)}</p>
+        <p><strong>Roll Number:</strong> ${escapeHTML(c.roll)}</p>
+        <p><strong>Description:</strong> ${escapeHTML(c.description)}</p>
+        <p><strong>Current Status:</strong> ${statusBadge(c.status)}</p>
+        <p><strong>Existing Resolution:</strong>
+        ${escapeHTML(c.resolution || "Not updated")}</p>
+    `;
+
+    document.getElementById("newStatus").value = c.status;
+    document.getElementById("resolution").value = c.resolution || "";
+}
+
+document.getElementById("updateForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const c = complaints.find(item => item.id ===
+        document.getElementById("manageSelect").value);
+
+    if (!c) {
+        alert("Please select a complaint first.");
+        return;
+    }
+
+    const oldStatus = c.status;
+    const oldResolution = c.resolution;
+    const oldUpdatedAt = c.updatedAt;
+
+    c.status = document.getElementById("newStatus").value;
+    c.resolution = document.getElementById("resolution").value.trim();
+    c.updatedAt = new Date().toISOString();
+
+    if (!saveComplaints()) {
+        c.status = oldStatus;
+        c.resolution = oldResolution;
+        c.updatedAt = oldUpdatedAt;
+        return;
+    }
+
+    showNotice("manageNotice",
+        "Complaint " + c.id + " updated successfully.");
+
+    renderManageDetails();
+    renderList();
+    updateDashboard();
+});
+
+// INITIAL LOAD
+updateDashboard();
+renderList();
+renderManageOptions();
+</script>
+
+</body>
+</html>
